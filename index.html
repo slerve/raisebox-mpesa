@@ -86,12 +86,13 @@
     </div>
 
     <script>
-        document.getElementById("payment-form").addEventListener("submit", async function (event) {
+        document.getElementById("mpesa-form").addEventListener("submit", async function (event) {
             event.preventDefault();
+
             const phone = document.getElementById("phone").value;
             const amount = document.getElementById("amount").value;
 
-            const response = await fetch("/mpesa-push", {
+            const response = await fetch("http://127.0.0.1:5000/mpesa-push", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -100,7 +101,13 @@
             });
 
             const result = await response.json();
-            alert(result.message);
+            console.log(result);
+
+            if (result.ResponseCode === "0") {
+                alert("Payment request sent to your phone. Complete the transaction on your MPesa app.");
+            } else {
+                alert("Error: " + result.errorMessage);
+            }
         });
     </script>
 </body>
